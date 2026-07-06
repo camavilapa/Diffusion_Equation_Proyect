@@ -1,0 +1,7 @@
+# Ejecutables
+a.out
+*.out
+*.exe
+*.x
+#Data
+*.txt
