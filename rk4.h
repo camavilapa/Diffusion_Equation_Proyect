@@ -6,7 +6,7 @@ void integrate_rk4(deriv_t fderiv, system_t & s, double tinit, double tend,
                     double dt, printer_t writer)
 {
     // vector to store derivs
-    system_t dsdt(s.size());
+    system_t dsdt(s.size()); 
     system_t k1(s.size());
     system_t k2(s.size());
     system_t k3(s.size());
@@ -28,6 +28,10 @@ void integrate_rk4(deriv_t fderiv, system_t & s, double tinit, double tend,
 
         // compute new state. NOTE: Not using components, assuming valarray or similar
         s = s + dt*(k1 + 2*k2 + 2*k3 + k4)/6.0;
+
+
+
+        
 
       }
 }

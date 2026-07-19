@@ -4,6 +4,7 @@
 #include <print>
 #include <eigen3/Eigen/Core> // Estructura Core de Eigen para vectores dinámicos
 #include "rk4.h"
+#include "vtk_exporter.h"
 
 void set_initial_conditions(Eigen::VectorXd &s);
 void fderiv(const Eigen::VectorXd &s, Eigen::VectorXd &dsdt, double t);
@@ -13,7 +14,9 @@ void writer(const Eigen::VectorXd &s, double t);
 Comenzamos con un borde superior a 100 C° y luego de 2s el calor se ha difundido por la placa hasta llegar a una temperatura casi 
 homogénea de 6C° en toda la placa.
 
-Compílese con g++ -std=c++23 pruebas.cpp y redireccione el output a un archivo.txt haciendo ./a.out > data.txt
+Compílese con g++ -std=c++23 pruebas.cpp vtk_exporter.cpp -o simulacion
+Cada paso de tiempo se exporta como un archivo .vtk en la carpeta "output_vtk/",
+listo para abrirse en ParaView (File > Open, seleccionar toda la serie frame_*.vtk).
 
 La matriz respresenta la placa y cada valor representa la temperatura en ese cuadro de la placa.
 
@@ -115,19 +118,11 @@ void fderiv(const Eigen::VectorXd &s, Eigen::VectorXd &dsdt, double t) {
 }
 
 void writer(const Eigen::VectorXd &s, double t) {
-    //imprime matriz que representa la T de la placa
-    std::println("t = {:<10.3f}",t);
-    //imprimos el vector estado s
-        for (int i = 0; i < Ny; ++i) {
-            for (int j = 0; j < Nx; ++j) {
-                int k = i * Nx + j; // Aplanamiento lineal de la malla indexada
-            
-                std::print("{:10.3f}",s[k]);
-                if (j == Nx - 1)      std::println("");
-      
-        }
-    }
-    std::println("");
+    // Exportador VTK: se crea una única vez (static) y se reutiliza en cada
+    // llamada para ir numerando los frames (frame_000000.vtk, frame_000001.vtk, ...)
+    static VTKExporter vtk_exporter("output_vtk", Nx, Ny, dx, dy);
+
+    vtk_exporter.write_frame(s, t, "temperatura");
 }
 
 
