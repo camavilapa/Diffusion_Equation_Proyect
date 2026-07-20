@@ -27,11 +27,7 @@ void integrate_rk4(deriv_t fderiv, system_t & s, double tinit, double tend,
         k4 = dsdt;
 
         // compute new state. NOTE: Not using components, assuming valarray or similar
-        s = s + dt*(k1 + 2*k2 + 2*k3 + k4)/6.0;
-
-
-
-        
+        s = s + dt*(k1 + 2*k2 + 2*k3 + k4)/6.0;   
 
       }
 }

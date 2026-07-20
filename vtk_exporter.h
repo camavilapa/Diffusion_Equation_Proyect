@@ -13,6 +13,7 @@
 // VTK es STRUCTURED_POINTS: basta con indicar dimensiones, origen y
 // espaciado, y listar los valores del campo en orden (x variando más
 // rápido, luego y)
+
 class VTKExporter {
 private:
     std::string output_dir;
